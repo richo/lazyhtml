@@ -1,3 +1,6 @@
+#[cfg(fuzzing)]
+extern crate afl;
+
 extern crate bindgen;
 extern crate glob;
 
@@ -20,6 +23,22 @@ const IMPLICIT_DEPS: &[&str] = &[
 fn main() {
     let out_dir = env::var("OUT_DIR").unwrap();
     let out_path = PathBuf::from(&out_dir);
+
+    #[cfg(fuzzing)]
+    {
+        // There's nothing in this that forces fuzz "awareness" in the output files, meaning
+        // reusing a worktree for fuzzing and non fuzzing will potentially result in using an
+        // uninstrumented copy of the C code.
+        //
+        // Ideally, we'd add the "fuzziness" to the path to keep them seperate, but for now this
+        // should be ok.
+        let afl_dir = afl::common::afl_dir();
+        let lib_dir = afl_dir.join("lib/afl");
+        let afl_clang = afl_dir.join("bin").join("afl-clang");
+
+        env::set_var("AFL_PATH", lib_dir);
+        env::set_var("CC", afl_clang);
+    }
 
     assert!(
         Command::new("make")

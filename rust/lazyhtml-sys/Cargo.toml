@@ -6,3 +6,7 @@ version = "0.1.0"
 [build-dependencies]
 bindgen = "0.31.3"
 glob = "0.2.11"
+
+[target.'cfg(fuzzing)'.build-dependencies]
+# afl = "0.4.4"
+afl = { git = "https://github.com/richo/afl.rs", branch = "expose-common" }

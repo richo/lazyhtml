@@ -25,3 +25,10 @@ serde_json = "1.0.5"
 rustc-test = "0.3.0"
 
 [workspace]
+
+# Temporarily use my branch until we can either upstream access to the common
+# module or find another workaround.
+[target.'cfg(fuzzing)'.build-dependencies]
+afl = { git = "https://github.com/richo/afl.rs", branch = "expose-common" }
+[target.'cfg(fuzzing)'.dependencies]
+afl = { git = "https://github.com/richo/afl.rs", branch = "expose-common" }
