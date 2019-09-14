@@ -56,7 +56,7 @@ $(OUT_TARGET)/parser-feedback.o: $(OUT)/tokenizer-states.h | $(OUT_TARGET)
 $(OUT_TARGET)/parser-feedback.o:
 	$(CC) $(CFLAGS) -c $< -include $(OUT)/tokenizer-states.h -o $@
 
-$(OUT_TARGET)/serializer.o: | $(OUT_TARGET)
+$(OUT_TARGET)/serializer.o: serializer.c | $(OUT_TARGET)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ## Final library and binaries
